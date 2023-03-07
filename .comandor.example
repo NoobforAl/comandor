@@ -1,0 +1,22 @@
+{
+  "name": "Update Projects!",
+  "actions": [
+    {
+      "action_name": "scoop update pkg",
+      "path": "C:/",
+      "commands": [
+        "scoop update -g *"
+      ],
+      "timeout": 5000
+    },
+
+     {
+      "action_name": "open cmd",
+      "path": "C:/mycode/",
+      "commands": [
+        "code ."
+      ],
+      "timeout": 10
+    }
+  ]
+}
