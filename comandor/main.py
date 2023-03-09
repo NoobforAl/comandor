@@ -1,10 +1,9 @@
+from comandor.settings import loadSetting, Setting
+from comandor.log import log, FORMAT, DATEFMT
+from comandor.models import Action
+
 from tqdm.contrib.logging import logging_redirect_tqdm
 from tqdm import tqdm
-
-
-from comandor.settings import loadSetting, Setting
-from comandor.log import log, logSetting
-from comandor.models import Action
 
 from typing import Tuple, List
 
@@ -12,7 +11,9 @@ import subprocess as sp
 import argparse
 
 
-def read_args() -> Tuple[str]:
+# read args
+# return logfile, config, debug settings
+def read_args() -> Tuple[str, str, bool]:
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-l', "--logfile", type=str,
@@ -23,25 +24,45 @@ def read_args() -> Tuple[str]:
                         required=False, help='run debug mod')
 
     args = parser.parse_args()
-    return (args.logfile, args.config, args.debug)
+    logfile: str = args.logfile
+    config: str = args.config
+    debug: bool = args.debug
+    return (logfile, config, debug)
 
 
-def newConfig() -> Setting:
-    logfile, config, debug = read_args()
+# setup new config log and load setting form file
+def newConfig(logfile: str, config: str, debug: bool) -> Setting:
+    setting: Setting = loadSetting(config)
 
-    if debug:
-        logSetting["level"] = log.DEBUG
+    level: int = log.INFO
+    filename: str = ""
+    filemode: str = ""
 
-    if logfile:
-        logSetting["filemode"] = "w"
-        logSetting["filename"] = logfile
+    if debug or setting.debug:
+        level = log.DEBUG
 
-    log.basicConfig(**logSetting)
+    if logfile or setting.logfile:
+        filename = logfile or str(setting.logfile)
+        filemode = "w"
+
+    log.basicConfig(
+        filename=filename,
+        filemode=filemode,
+        level=level,
+        format=FORMAT,
+        datefmt=DATEFMT)
+
+    if debug or setting.debug:
+        log.debug("run debug mode!")
+
     log.info("logger configure!")
+    log.info("loaded Setting!")
+    return setting
 
-    return loadSetting(config)
 
-
+# handle 2 type error
+# 1- call error system error for your command
+# 2- timeout error
 def errorHandel(func):
     def wrapper(*a, **kw):
         try:
@@ -52,7 +73,7 @@ def errorHandel(func):
                 f"Status : FAIL Code: {err.returncode} OutPut: {err.output}")
             return 1
 
-        except Exception as e:
+        except sp.TimeoutExpired as e:
             log.error(e)
             return 1
 
@@ -64,8 +85,7 @@ def runActions(actions: List[Action]) -> int:
     for action in tqdm(actions):
         log.info(f"Processing {action.action_name}")
 
-        command = f"cd {action.path} && " + \
-            " && ".join(action.commands)
+        command = f"cd {action.path} && " + "&& ".join(action.commands)
 
         log.debug(f"run this command: {command}")
         outstr = sp.check_output(command, shell=True, stderr=sp.STDOUT,
@@ -78,7 +98,7 @@ def runActions(actions: List[Action]) -> int:
 
 
 def main() -> int:
-    setting: Setting = newConfig()
+    setting: Setting = newConfig(*read_args())
 
     log.info(f"start commander -> {setting.name}")
 
