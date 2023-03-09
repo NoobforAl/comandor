@@ -1,5 +1,7 @@
 # comandor
-Very Simple Script for Run your command!
+Very Simple Script for Run your command!  
+A simple tool to simplify some repetitive 
+tasks such as updating the Linux repository and daily tasks!
 
 ### How Install
 
@@ -13,6 +15,8 @@ Very Simple Script for Run your command!
 ```json
 {
   "name": "Update Apps!",
+  "debug": true, // run debug mode ( not necessary )
+  "logfile": "./logs.log", // where save logs ( not necessary )
   "actions": [
     {
       "action_name": "scoop update pkg",
@@ -34,8 +38,6 @@ Very Simple Script for Run your command!
 
 ### Command Line Help
 
-<div>
-
 | Command |                                      Info                                              |
 | -----   | :--------------------------------------------------------------------------------------: |
 | -h      |                                      see help                                            |
@@ -43,4 +45,3 @@ Very Simple Script for Run your command!
 | -c  < path config file > | setup yor config file instead of .comandor file |
 | -d   | run program debug mode |
 
-</div>
