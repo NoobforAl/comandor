@@ -38,6 +38,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 logs.log
+/tests/logs.log
 .comandor
 
 # Unit test / coverage reports
