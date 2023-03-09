@@ -7,29 +7,24 @@ import json
 import os
 
 
+# load setting form file and return setting
+# default use ./.comandor
 def loadSetting(file: str = ".comandor") -> Setting:
-    log.debug("run load setting")
-
     if not os.path.exists(file):
         raise Exception("Config file not found!")
 
-    setting: Setting = None
+    setting: Setting
     with open(file, "r") as f:
         try:
-            log.debug("read .command file from ./")
-            log.debug("decode json to dict")
             op = json.load(f)
-
-            log.debug("match setting with models")
             setting = Setting(**op)
 
         except ValidationError as e:
             log.error(e)
-            raise
+            raise e
 
         except json.JSONDecodeError as e:
             log.error(e)
-            raise
+            raise e
 
-    log.debug("load Setting complete, return setting")
     return setting
