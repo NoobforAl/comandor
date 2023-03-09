@@ -1,5 +1,7 @@
 {
   "name": "Update Projects!",
+  "debug": true,
+  "logfile": "./logs.log",
   "actions": [
     {
       "action_name": "scoop update pkg",
