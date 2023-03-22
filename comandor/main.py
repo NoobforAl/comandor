@@ -43,7 +43,7 @@ def newConfig(logfile: str, config: str, debug: bool) -> Setting:
 
     if logfile or setting.logfile:
         filename = logfile or str(setting.logfile)
-        filemode = "w"
+        filemode = "a"
 
     log.basicConfig(
         filename=filename,
