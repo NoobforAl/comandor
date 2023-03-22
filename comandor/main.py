@@ -70,11 +70,11 @@ def errorHandel(func):
 
         except sp.CalledProcessError as err:
             log.error(
-                f"Status : FAIL Code: {err.returncode} OutPut: {err.output}")
+                f"Status : FAIL Code: {err.returncode}\n OutPut:\n {err.output.decode()}")
             return 1
 
         except sp.TimeoutExpired as e:
-            log.error(e)
+            log.error(e.output.decode())
             return 1
 
     return wrapper
@@ -83,7 +83,7 @@ def errorHandel(func):
 @errorHandel
 def runActions(actions: List[Action]) -> int:
     for action in tqdm(actions):
-        log.info(f"Processing {action.action_name}")
+        log.info(f"---- Processing {action.action_name} ----")
 
         command = f"cd {action.path} && " + "&& ".join(action.commands)
 
@@ -91,9 +91,9 @@ def runActions(actions: List[Action]) -> int:
         outstr = sp.check_output(command, shell=True, stderr=sp.STDOUT,
                                  timeout=action.timeout)
         log.info(outstr.decode())
-        log.info(f"Done Process {action.action_name}")
+        log.info(f"---- Done Process {action.action_name} ----\n")
 
-    log.info("Done All Task!")
+    log.info("---- Done All Task! ----")
     return 0
 
 
