@@ -55,8 +55,8 @@ def newConfig(logfile: str, config: str, debug: bool) -> Setting:
     if debug or setting.debug:
         log.debug("run debug mode!")
 
-    log.info("logger configure!")
-    log.info("loaded Setting!")
+    log.debug("logger configure!")
+    log.debug("loaded Setting!")
     return setting
 
 
@@ -70,20 +70,21 @@ def errorHandel(func):
 
         except sp.CalledProcessError as err:
             log.error(
-                f"Status : FAIL Code: {err.returncode}\n OutPut:\n {err.output.decode()}")
-            return 1
+                f"Status : FAIL Code: {err.returncode}\n"
+                "OutPut:\n {err.output.decode()}")
+            raise
 
         except sp.TimeoutExpired as e:
-            log.error(e.output.decode())
-            return 1
+            log.error("Timeout Error!")
+            raise
 
     return wrapper
 
 
 @errorHandel
-def runActions(actions: List[Action]) -> int:
+def runActions(actions: List[Action]):
     for action in tqdm(actions):
-        log.info(f"---- Processing {action.action_name} ----")
+        log.info(f"---- Processing {action.action_name} ----\n")
 
         command = f"cd {action.path} && " + " && ".join(action.commands)
 
@@ -91,20 +92,19 @@ def runActions(actions: List[Action]) -> int:
         outstr = sp.check_output(command, shell=True, stderr=sp.STDOUT,
                                  timeout=action.timeout)
         log.info(outstr.decode())
-        log.info(f"---- Done Process {action.action_name} ----\n")
+        log.info(f"---- Done Process {action.action_name} ----")
 
     log.info("---- Done All Task! ----")
-    return 0
 
 
-def main() -> int:
+def main():
     setting: Setting = newConfig(*read_args())
 
     log.info(f"start commander -> {setting.name}")
 
     with logging_redirect_tqdm():
-        return runActions(setting.actions)
+        runActions(setting.actions)
 
 
 if __name__ == "__main__":
-    exit(main())
+    main()
