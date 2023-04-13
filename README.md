@@ -1,16 +1,17 @@
-# comandor
+# Comandor
+
 Very Simple Script for Run your command!  
-A simple tool to simplify some repetitive 
+A simple tool to simplify some repetitive
 tasks such as updating the Linux repository and daily tasks!
 
-### How Install
+## How Install
 
 > pip install comandor
 
 ### How Use
 
 - make file .comandor  
-- setup config like this 
+- setup config like this
 
 ```json
 {
@@ -34,7 +35,7 @@ tasks such as updating the Linux repository and daily tasks!
 - you can see .comandor.example for more example  
 - and run this command
 
-> comandor 
+> comandor
 
 ### Command Line Help
 
@@ -44,4 +45,3 @@ tasks such as updating the Linux repository and daily tasks!
 | -l < path log file >  | where save logFile, if don't use this, not save logs |
 | -c  < path config file > | setup yor config file instead of .comandor file |
 | -d   | run program debug mode |
-
