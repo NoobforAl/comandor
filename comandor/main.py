@@ -85,7 +85,7 @@ def runActions(actions: List[Action]) -> int:
     for action in tqdm(actions):
         log.info(f"---- Processing {action.action_name} ----")
 
-        command = f"cd {action.path} && " + "&& ".join(action.commands)
+        command = f"cd {action.path} && " + " && ".join(action.commands)
 
         log.debug(f"run this command: {command}")
         outstr = sp.check_output(command, shell=True, stderr=sp.STDOUT,
