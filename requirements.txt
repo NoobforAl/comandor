@@ -1,0 +1,8 @@
+flake8
+mypy
+setuptools
+build
+types-tqdm
+autopep8
+tqdm
+pydantic
