@@ -30,7 +30,7 @@ jobs:
         run: python -m build
 
       - name: Run Test
-        run: cd test && python test_comandor.py
+        run: py -m test.test_comandor
 
       - name: Lint Code
         run: flake8 && mypy

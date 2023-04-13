@@ -10,7 +10,7 @@ class TestCore(unittest.TestCase):
 
     def test_loadSetting(self):
         with self.assertRaises(settings.ValidationError):
-            settings.loadSetting("./comandor_break.json")
+            settings.loadSetting("./test/comandor_break.json")
 
     def test_modelAction(self):
         # raise error for commands type
@@ -32,7 +32,7 @@ class TestCore(unittest.TestCase):
     def test_main(self):
         setting = main.newConfig(
             logfile="",
-            config="test_comandor.json",
+            config="./test/test_comandor.json",
             debug=True
         )
         # if action return 1 status code assert!
