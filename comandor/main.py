@@ -96,9 +96,8 @@ def runActions(actions: List[Action]):
         log.info(f"run this command: {command}")
         log.info(f"run with timeout: {action.timeout}")
 
-        log.debug(f"run command")
-        outProcess = sp.check_output(command, shell=True,
-                                     stderr=sp.STDOUT,
+        log.debug("run command")
+        outProcess = sp.check_output(command, shell=True, stderr=sp.STDOUT,
                                      timeout=action.timeout)
 
         log.debug("print result from Process")

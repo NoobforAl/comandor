@@ -2,4 +2,5 @@
 exclude = .git,
           __pycache__,
           env,
-          .\comandor\log.py
+          ./comandor/log.py,
+          build,
