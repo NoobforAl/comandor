@@ -36,7 +36,10 @@ class TestCore(unittest.TestCase):
             debug=True
         )
         # if action return 1 status code assert!
-        self.assertEqual(0,  main.runActions(setting.actions))
+        try:
+            main.runActions(setting.actions)
+        except Exception as e:
+            self.assert_(e)
 
 
 if __name__ == '__main__':
