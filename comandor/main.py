@@ -9,6 +9,7 @@ from typing import Tuple, List
 
 import subprocess as sp
 import argparse
+import sys
 
 
 # read args
@@ -33,10 +34,8 @@ def read_args() -> Tuple[str, str, bool]:
 # setup new config log and load setting form file
 def newConfig(logfile: str, config: str, debug: bool) -> Setting:
     setting: Setting = loadSetting(config)
-
     level: int = log.INFO
-    filename: str = ""
-    filemode: str = ""
+    handlers: List = []
 
     if debug or setting.debug:
         level = log.DEBUG
@@ -44,13 +43,16 @@ def newConfig(logfile: str, config: str, debug: bool) -> Setting:
     if logfile or setting.logfile:
         filename = logfile or str(setting.logfile)
         filemode = "a"
+        handlers = [
+            log.FileHandler(filename, filemode),
+            log.StreamHandler(sys.stdout)
+        ]
 
     log.basicConfig(
-        filename=filename,
-        filemode=filemode,
         level=level,
         format=FORMAT,
-        datefmt=DATEFMT)
+        datefmt=DATEFMT,
+        handlers=handlers)
 
     if debug or setting.debug:
         log.debug("run debug mode!")
@@ -66,6 +68,7 @@ def newConfig(logfile: str, config: str, debug: bool) -> Setting:
 def errorHandel(func):
     def wrapper(*a, **kw):
         try:
+            log.debug("Run runAction Function")
             return func(*a, **kw)
 
         except sp.CalledProcessError as err:
@@ -74,7 +77,7 @@ def errorHandel(func):
                 "OutPut:\n {err.output.decode()}")
             raise
 
-        except sp.TimeoutExpired as e:
+        except sp.TimeoutExpired:
             log.error("Timeout Error!")
             raise
 
@@ -83,16 +86,24 @@ def errorHandel(func):
 
 @errorHandel
 def runActions(actions: List[Action]):
+    log.debug("Run action from actions list")
+
     for action in tqdm(actions):
-        log.info(f"---- Processing {action.action_name} ----\n")
+        log.info(f"---- Processing {action.action_name} ----")
 
         command = f"cd {action.path} && " + " && ".join(action.commands)
 
-        log.debug(f"run this command: {command}")
-        outstr = sp.check_output(command, shell=True, stderr=sp.STDOUT,
-                                 timeout=action.timeout)
-        log.info(outstr.decode())
-        log.info(f"---- Done Process {action.action_name} ----")
+        log.info(f"run this command: {command}")
+        log.info(f"run with timeout: {action.timeout}")
+
+        log.debug(f"run command")
+        outProcess = sp.check_output(command, shell=True,
+                                     stderr=sp.STDOUT,
+                                     timeout=action.timeout)
+
+        log.debug("print result from Process")
+        log.info(outProcess.decode())
+        log.info(f"---- Done Process {action.action_name} ----\n")
 
     log.info("---- Done All Task! ----")
 
@@ -101,7 +112,6 @@ def main():
     setting: Setting = newConfig(*read_args())
 
     log.info(f"start commander -> {setting.name}")
-
     with logging_redirect_tqdm():
         runActions(setting.actions)
 
