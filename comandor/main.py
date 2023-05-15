@@ -74,7 +74,7 @@ def errorHandel(func):
         except sp.CalledProcessError as err:
             log.error(
                 f"Status : FAIL Code: {err.returncode}\n"
-                "OutPut:\n {err.output.decode()}")
+                f"OutPut:\n {err.output.decode()}")
             raise
 
         except sp.TimeoutExpired:
