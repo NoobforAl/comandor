@@ -1,0 +1,11 @@
+tqdm
+pydantic
+pyyaml
+flake8
+mypy
+setuptools
+build
+types-tqdm
+autopep8
+twine
+types-pyyaml
