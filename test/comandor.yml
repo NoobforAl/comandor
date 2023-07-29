@@ -1,0 +1,9 @@
+name: "test rund command"
+debug: true
+logfile: "./logs.log"
+actions:
+  - action_name: "test12"
+    path: "."
+    commands:
+      - "cd ."
+    timeout: 5000
