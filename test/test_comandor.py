@@ -8,17 +8,19 @@ import os
 class TestCore(unittest.TestCase):
 
     def test_ymlAction(self):
+        path = os.path.abspath("./test/test_comandor.yml")
         App(newConfig(
             "./log.log",
-            "test_comandor.yml",
+            path,
             True,
             "",
         )).Run()
 
     def test_Skip(self):
+        path = os.path.abspath("./test/test_comandor.json")
         App(newConfig(
             "./log.log",
-            "test_comandor.json",
+            path,
             True,
             "test",
         )).Run()
