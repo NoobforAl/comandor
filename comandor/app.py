@@ -15,7 +15,7 @@ class App:
     def Run(self):
         log.debug("Run action from actions list")
 
-        for action in tqdm(self.actions):
+        for action in tqdm(self.setting.actions):
             log.info(f"---- Processing {action.action_name} ----")
 
             command = f"cd {action.path} && " + " && ".join(action.commands)
