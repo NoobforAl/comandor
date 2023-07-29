@@ -23,11 +23,13 @@ def loadSetting(file: str = ".comandor") -> Setting:
 
         except json.JSONDecodeError as e:
 
-            try:
-                op = yaml.safe_load(f)
-            except yaml.error.YAMLError as err:
-                log.error("pars conf error", e, err)
-                raise
+            with open(file, "r") as f:
+                try:
+                    op = yaml.safe_load(f)
+
+                except yaml.error.YAMLError as err:
+                    log.error("pars conf error", e, err)
+                    raise
 
     try:
         setting = Setting(**op)
