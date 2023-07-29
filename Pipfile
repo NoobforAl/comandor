@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 tqdm = "*"
 pydantic = "*"
+pyyaml = "*"
 
 [dev-packages]
 flake8 = "*"
