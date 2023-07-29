@@ -6,7 +6,7 @@ from comandor.log import log
 from comandor.app import App
 
 
-if __name__ == "__main__":
+def main():
     args = read_args()
     setting: Setting = newConfig(*args)
     app = App(setting)
@@ -15,3 +15,12 @@ if __name__ == "__main__":
 
     with logging_redirect_tqdm():
         app.Run()
+
+
+if __name__ == "__main__":
+    main()
+
+
+__all__ = [
+    "main",
+]
