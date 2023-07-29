@@ -11,7 +11,7 @@ tasks such as updating the Linux repository and daily tasks!
 ### How Use
 
 - make file .comandor  
-- setup config like this
+- setup config like this (json file)
 
 ```json
 {
@@ -32,6 +32,21 @@ tasks such as updating the Linux repository and daily tasks!
 }
 ```  
 
+OR yaml file:
+
+```yaml
+name: "test rund command"
+debug: true
+logfile: "./logs.log"
+actions:
+  - action_name: "test12"
+    path: "."
+    commands:
+      - "cd ."
+    timeout: 5000
+
+```
+
 - you can see .comandor.example for more example  
 - and run this command
 
@@ -39,9 +54,21 @@ tasks such as updating the Linux repository and daily tasks!
 
 ### Command Line Help
 
-| Command |                                      Info                                              |
-| -----   | :--------------------------------------------------------------------------------------: |
-| -h      |                                      see help                                            |
-| -l < path log file >  | where save logFile, if don't use this, not save logs |
-| -c  < path config file > | setup yor config file instead of .comandor file |
-| -d   | run program debug mode |
+```txt
+❯ comandor -h
+usage: comandor [-h] [-l LOGFILE] [-c CONFIG] [-d] [-sk SKIP]
+
+options:
+  -h, --help            show this help message and exit
+  -l LOGFILE, --logfile LOGFILE
+                        where save logfile
+  -c CONFIG, --config CONFIG
+                        where you have config file
+  -d, --debug           run debug mod
+  -sk SKIP, --skip SKIP
+                        skip with text,check text and if found match skip
+```
+
+### How run tests?
+
+> python -m unittest  test/test_comandor.py
