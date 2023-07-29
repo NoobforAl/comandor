@@ -16,6 +16,7 @@ build = "*"
 types-tqdm = "*"
 autopep8 = "*"
 twine = "*"
+types-pyyaml = "*"
 
 [requires]
 python_version = "3.9"

@@ -12,10 +12,9 @@ import os
 
 def loadSetting(file: str = ".comandor") -> Setting:
     if not os.path.exists(file):
-        raise Exception("Config file not found!")
+        raise Exception(f"Config file not found! {file}")
 
     setting: Setting
-    op: dict[str, str]
 
     with open(file, "r") as f:
         try:
