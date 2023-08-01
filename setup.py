@@ -21,7 +21,8 @@ setup(
     packages=['comandor'],
     keywords=["command line", "script"],
     install_requires=["pydantic >=1.10.5",
-                      "tqdm >=4.65.0"],
+                      "tqdm >=4.65.0",
+                      "PyYaml >=6.0.1"],
     entry_points={
         "console_scripts": ['comandor = comandor.main:main']
     },
